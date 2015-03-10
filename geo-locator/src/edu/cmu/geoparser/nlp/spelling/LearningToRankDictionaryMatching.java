@@ -2,10 +2,6 @@ package edu.cmu.geoparser.nlp.spelling;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map.Entry;
-
-import org.python.modules.time;
 
 import edu.cmu.geoparser.common.StringUtil;
 import edu.cmu.geoparser.io.GetReader;
@@ -42,6 +38,9 @@ public class LearningToRankDictionaryMatching {
 	}
 
 	public static void main(String argv[]) throws IOException, InterruptedException {
+		argv[0] = "gazetteerMatchingInput/precision-10-matches.csv";
+		argv[1] = "gazetteerMatchingInput/SVM-precision-10-matches.csv";
+		argv[2] = "./modelTest.mdl";
 		LearningToRankDictionaryMatching ltr = new LearningToRankDictionaryMatching();
 		ltr.TrainReRanking(argv);
 		Thread.sleep(1000);
@@ -52,10 +51,10 @@ public class LearningToRankDictionaryMatching {
 		
 		LearningToRankDictionaryMatching ltr = new LearningToRankDictionaryMatching();
 //		DictionaryMerging mc = new DictionaryMerging(GetReader.getIndexSearcher("GazIndex"));
-		BufferedReader br = GetReader.getUTF8FileReader("/Users/indri/Documents/Research_data/misspell/precision-10-matches.csv");
-		BufferedWriter bw = GetWriter.getFileWriter("/Users/indri/Documents/Research_data/misspell/SVM-precision-10-matches.csv");
+		BufferedReader br = GetReader.getUTF8FileReader(argv[0]);
+		BufferedWriter bw = GetWriter.getFileWriter(argv[1]);
 		
-		svm_model model = svm.svm_load_model("./modelTest.mdl");
+		svm_model model = svm.svm_load_model(argv[2]);
 		int line = 0;
 		ArrayList<Double> x = new ArrayList<Double>();
 		int accuracy = 0;
@@ -128,7 +127,7 @@ public class LearningToRankDictionaryMatching {
 
 	public void TrainReRanking(String argv[]) throws IOException {
 
-		BufferedReader br = GetReader.getUTF8FileReader("/Users/indri/Documents/Research_data/misspell/precision-10-matches.csv");
+		BufferedReader br = GetReader.getUTF8FileReader(argv[0]);
 
 		int line = 0;
 		ArrayList<ArrayList<Double>> x = new ArrayList<ArrayList<Double>>(2000);
